@@ -9,7 +9,10 @@ from django.middleware.csrf import get_token
 
 from baham.enum_types import VehicleStatus, VehicleType
 from baham.models import Vehicle, VehicleModel, validate_colour
-
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
 # Create your views here.
 def render_login(request, message=None):
@@ -261,3 +264,28 @@ def delete_vehicle_model(request, uuid):
         return JsonResponse(response_data, status=200)
     else:
         return JsonResponse({'error': 'Invalid endpoint or method type'}, status=400)
+
+def change_password(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        current_password = request.POST['current-password']
+        new_password = request.POST['new-password']
+        
+        # Check if the username and current password are valid
+        user = authenticate(request, username=username, password=current_password)
+        
+        if user is not None:
+            # Set the new password for the user
+            user.set_password(new_password)
+            user.save()
+            
+            # Log in the user with the new password
+            user = authenticate(request, username=username, password=new_password)
+            login(request, user)
+            
+            messages.success(request, 'Password changed successfully.')
+            return redirect('home')  # Redirect to the home page or any other desired page
+        else:
+            messages.error(request, 'Invalid username or current password.')
+    
+    return render(request, 'changepassword.html')

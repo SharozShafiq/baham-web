@@ -22,4 +22,6 @@ urlpatterns = [
     path('api/create/vehiclemodel', views.create_vehicle_model, name='create_vehicle_model'),
     path('api/update/vehiclemodel/<str:uuid>', views.update_vehicle_model, name='update_vehicle_model'),
     path('api/delete/vehiclemodel/<str:uuid>', views.delete_vehicle_model, name='delete_vehicle_model'),
+
+    path('changepassword/', views.change_password, name='changepassword'),
 ]

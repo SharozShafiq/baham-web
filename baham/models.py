@@ -268,3 +268,31 @@ class Contract(models.Model):
     
     def purge(self, *args, **kwargs):
         self.delete()
+
+
+class Trip(models.Model):
+    TRIP_TYPES = [
+        ('PICK_UP', 'Pick Up'),
+        ('DROP_OFF', 'Drop Off'),
+    ]
+
+    vehicle = models.ForeignKey('VehicleModel', on_delete=models.CASCADE)
+    departure_datetime = models.DateTimeField()
+    trip_type = models.CharField(max_length=8, choices=TRIP_TYPES)
+
+    def __str__(self):
+        return f'Trip {self.pk}'
+
+class Trip(models.Model):
+    Trip_id=models.BigAutoField(primary_key=True, db_column='id')
+    vehicle=models.ForeignKey(Vehicle,on_delete=models.CASCADE, related_name="vehicles")
+    type_of_trip=models.CharField( max_length=255,choices=[(g.name, g.value) for g in type_of_pick], default='none')
+    departure_date = models.DateField( blank=True, null=True, default= timezone.now)
+        
+ # Model representing audit logs for university level
+class UniversityAuditLog(models.Model):
+    model_name = models.CharField(max_length=100)
+    object_id = models.PositiveIntegerField()
+    action = models.CharField(max_length=10)  # Create/Update/Delete
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)

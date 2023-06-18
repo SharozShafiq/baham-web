@@ -62,13 +62,14 @@
           </form>
 
           {% if message %}
-            <div class="alert alert-danger" role="alert">
-              {{message}}
+                <div class="alert alert-danger" role="alert">
+                    {{message}}
+                </div>
+            {% endif %}
+            <div class="form-group">
+                <a href="/changepassword" class="btn btn-secondary btn-block">Change Password</a>
             </div>
-          {% endif %}
-
         </div>
-      </div>
-    
+    </div>
 </body>
 </html>
